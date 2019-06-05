@@ -1,4 +1,18 @@
+;	tiles.asm
+;
+; The tiles file stores all of the different tile and item types.
+; The TILES location stores the locations of all of the tile types.
+; The ITEMS location stores the location of all of the item types.
+;
+; Currently items are not implemented yet so it is only tiles right now.
+
 .export TILES
+
+; This is the tile section. Each tile is 14x16, which translates to 4 bytes x 16 lines.
+; Most of these were generated with a processing program I wrote which allows you to 
+; draw on the screen and then export that as hexadecimal data.
+; Each time a new tile is created, it's label is added to the TILES section to be
+; referenced to in the world array and drawn in the drawing loop.
 
 TILES:
 .word GRASS, CONVEYOR1_1, CONVEYOR1_2, CONVEYOR1_3

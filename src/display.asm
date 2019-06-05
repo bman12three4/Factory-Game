@@ -1,3 +1,11 @@
+;	display.asm
+;
+; this file controls drawing to the screen. 
+; The draw routine here draws one 14x16 tiles
+; at a time, using the coordinate and type specified
+; in the zeropage locations degined in display.inc
+
+
 .include "monitor.inc"
 .include "display.inc"
 .include "tiles.inc"
@@ -15,22 +23,22 @@
 .define PLAYER_Y	GRID_HEIGHT/2
 
 
-.define	ADDR_1	$19
-.define ADDR_2	$1B
-.define TILE2D	$abc
+.define	ADDR_1	$19	; First block line address
+.define ADDR_2	$1B	; Second block line address
+.define TILE2D	$abc	; non-zeropage placeholder for tile adderss.
 	
-draw:	ldx	TILENUM	;num
-	lda 	TILES, X
-	sta 	patch_1+1
-	sta 	patch_2+1
+draw:	ldx	TILENUM		; This section gets the type of tile to draw.
+	lda 	TILES, X	; It then loads the address of the tile to draw
+	sta 	patch_1+1	; and changes all references to the placeholder 
+	sta 	patch_2+1	; address to the address of the tile to draw.
 	sta 	patch_3+1
-	sta 	patch_4+1
+	sta 	patch_4+1	; this first part gets the low byte
 	sta 	patch_5+1
 	sta 	patch_6+1
 	sta 	patch_7+1
 	sta 	patch_8+1
 
-	lda 	TILES+1, X
+	lda 	TILES+1, X	; and this second part gets the high byte.
 	sta 	patch_1+2
 	sta 	patch_2+2
 	sta 	patch_3+2
@@ -40,20 +48,20 @@ draw:	ldx	TILENUM	;num
 	sta 	patch_7+2
 	sta 	patch_8+2
 
-	ldx	#00
-	ldy	TILECD
-	lda	HGR_GRID,Y
-	sta	ADDR_1
+	ldx	#00		; Start x, the counter, to 0.
+	ldy	TILECD		; Set y to the coordinate to draw to.
+	lda	HGR_GRID,Y	; Load the screen address for that coordinate
+	sta	ADDR_1		; Store that to address 1
 	clc
-	adc	#$80
-	sta	ADDR_2
-	lda	HGR_GRID+1,Y
-	sta	ADDR_1+1
+	adc	#$80		; Add $80 to get the block below that
+	sta	ADDR_2		; Store that to address 2
+	lda	HGR_GRID+1,Y	; Get the high bytes for those two, which will be the
+	sta	ADDR_1+1	; same since the tiles never cross the interleaving pattern.
 	sta	ADDR_2+1
-	.define ITER1 #$20
+	.define ITER1 #$20	; $20 means the first block is done.
 lin1t8:	ldy	#00
-patch_1:
-	lda	TILE2D,X
+patch_1:			; Loop through the first 8 lines, drawing the value from the tile
+	lda	TILE2D,X	; data to the screen memory
 	sta	(ADDR_1),Y
 	inx
 	iny
@@ -76,10 +84,10 @@ patch_4:
 	adc	#$04
 	sta 	ADDR_1+1
 	cpx	ITER1
-	bne	lin1t8
+	bne	lin1t8		; Once that is over, go down to the next 8 lines.
 	clc
-	.define ITER2 #$40
-lin916:	ldy	#00
+	.define ITER2 #$40	; The x counter keeps going to access the rest of the tile data
+lin916:	ldy	#00		; Y resets to go back to the beginning of screen memory offset
 patch_5:
 	lda	TILE2D,X
 	sta	(ADDR_2),Y
@@ -104,12 +112,12 @@ patch_8:
 	adc	#$04
 	sta 	ADDR_2+1
 	cpx	ITER2
-	bne	lin916
+	bne	lin916		; Do that till the end, then you're done.
 	rts
 	
 .DATA
-
-HGR_GRID:
+				; The HGR grid is every location that a tile can be drawn.
+HGR_GRID:			; It is a 10x10 grid.
 .word $2000, $2004, $2008, $200C, $2010, $2014, $2018, $201C, $2020, $2024
 .word $2100, $2104, $2108, $210C, $2110, $2114, $2118, $211C, $2120, $2124
 .word $2200, $2204, $2208, $220C, $2210, $2214, $2218, $221C, $2220, $2224

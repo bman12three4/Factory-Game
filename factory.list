@@ -2,9 +2,20 @@ ca65 V2.17 - Git 644d623
 Main file   : src\world.asm
 Current file: src\world.asm
 
+000000r 1               ;	world.asm
+000000r 1               ;
+000000r 1               ; The world file contains the following:
+000000r 1               ;	* The current world, stored as an array of bytes refering
+000000r 1               ;	  to the tile type they represent
+000000r 1               ;	* The item map, which stores all of the items to be drawn
+000000r 1               ;	  on top of any of the applicable items, namely conveyor belts
+000000r 1               ;	* Routines for getting the current 10x10 window from the larger
+000000r 1               ;	  world.
+000000r 1               
 000000r 1               .export World
 000000r 1               
-000000r 1               World:
+000000r 1               World:	; This is the array which stores all of the world data.
+000000r 1               	; Right now this is just 10x10, so no other methods are needed.
 000000r 1  02 00 00 00  .byte 02, 00, 00, 00, 00, 00, 00, 00, 00, 00
 000004r 1  00 00 00 00  
 000008r 1  00 00        
