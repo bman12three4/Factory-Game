@@ -3,6 +3,7 @@
 .include "world.inc"
 
 .import	draw
+.import itemdraw
 .import World
 .import ItemLoc
 .import itemRot
@@ -22,23 +23,23 @@ update:	ldx #00		; This loop just updates any animated tiles, like conveyors.
 update1:lda World,x
 cktile:	cmp #00
 	beq view
-	cmp #02		; Check if it is one of the three conveyor positions
+	cmp #16		; Check if it is one of the three conveyor positions
 	beq rtconvJ	; Jump if it is
-	cmp #04
-	beq rtconvJ
-	cmp #06
-	beq rtconv2J	; Jump if it needs to be reset
-	cmp #08
-	beq lfconvJ
-	cmp #10
-	beq lfconvJ
-	cmp #12
-	beq lfconv2J
-	cmp #14
-	beq upassmJ
-	cmp #16
-	beq upassmJ
 	cmp #18
+	beq rtconvJ
+	cmp #20
+	beq rtconv2J	; Jump if it needs to be reset
+	cmp #22
+	beq lfconvJ
+	cmp #24
+	beq lfconvJ
+	cmp #26
+	beq lfconv2J
+	cmp #10
+	beq upassmJ
+	cmp #12
+	beq upassmJ
+	cmp #14
 	beq upassm2J
 	jmp ckitem
 rtconvJ: jmp rtconv
@@ -48,7 +49,7 @@ lfconv2J:jmp lfconv2
 upassmJ: jmp upassm
 upassm2J:jmp upassm2
 ckitem:	lda World,x
-	cmp #14
+	cmp #16
 	bcs upitem
 	jmp view
 upitem:	lda ItemLoc,x
@@ -67,7 +68,11 @@ view:	lda World,x
 	lda TILECD
 	lsr
 	tax
-	lda ItemLoc,x
+	lda World,x
+	cmp #16
+	bcs iview
+	jmp footer
+iview:	lda ItemLoc,x
 	sta TILENUM
 	txa 
 	asl
@@ -78,9 +83,11 @@ view:	lda World,x
 	tax
 footer:	inx
 	cpx #100
-	bne update1
+	bne updateme
 	rts
-	
+updateme:
+	jmp update1
+
 orecalc1:
 	lda ItemRot,x
 	cmp #00
@@ -147,7 +154,7 @@ rtconv:	clc		; Add 2 to the tile type, moving it forward 1.
 	sta World,x
 	jmp ckitem
 	
-rtconv2:lda #02		; Set the tile type back to 2, reseting it.
+rtconv2:lda #16		; Set the tile type back to 2, reseting it.
 	sta World,x
 	jmp ckitem
 	
@@ -156,7 +163,7 @@ lfconv:	clc		; Add 2 to the tile type, moving it forward 1.
 	sta World,x
 	jmp ckitem
 	
-lfconv2:lda #08		; Set the tile type back to 2, reseting it.
+lfconv2:lda #10		; Set the tile type back to 2, reseting it.
 	sta World,x
 	jmp ckitem
 	
@@ -169,7 +176,7 @@ upassm:	clc
 	sta World,x
 	jmp ckitem
 
-upassm2:lda #14
+upassm2:lda #12
 	sta World,x
 	jmp ckitem
 	

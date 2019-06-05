@@ -16,7 +16,7 @@
 ; referenced to in the world array and drawn in the drawing loop.
 
 TILES:	; A list of all of them is in the .inc file.
-.word GRASS
+.word GRASS, PLAYER
 .word INSERTER1_1, INSERTER1_2, INSERTER1_3
 .word ASSEMBLER1_1, ASSEMBLER1_2, ASSEMBLER1_3
 .word CONVEYOR1_1, CONVEYOR1_2, CONVEYOR1_3
@@ -40,6 +40,24 @@ GRASS:
 .byte $2a, $55, $6a, $55
 .byte $2a, $57, $2a, $55
 .byte $6a, $55, $2a, $5d
+
+PLAYER:
+.byte $80, $80, $81, $80
+.byte $80, $a0, $87, $80
+.byte $80, $a0, $87, $80
+.byte $80, $a0, $87, $80
+.byte $80, $80, $81, $80
+.byte $80, $a0, $85, $80
+.byte $80, $88, $91, $80
+.byte $80, $84, $81, $81
+.byte $80, $80, $81, $80
+.byte $80, $80, $81, $80
+.byte $80, $a0, $84, $80
+.byte $80, $88, $90, $80
+.byte $80, $88, $90, $80
+.byte $80, $88, $90, $80
+.byte $80, $90, $a0, $80
+.byte $80, $90, $a0, $80
 
 CONVEYOR1_1:
 .byte $0, $0, $0, $0
