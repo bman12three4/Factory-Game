@@ -12,8 +12,11 @@
 .include "world.inc"
 
 .export	draw
+.export itemdraw
 
 .import World
+.import ItemLoc
+.import ItemRot
 
 .CODE
 
@@ -25,7 +28,7 @@
 
 .define	ADDR_1	$19	; First block line address
 .define ADDR_2	$1B	; Second block line address
-.define TILE2D	$abc	; non-zeropage placeholder for tile adderss.
+.define TILE2D	$abc	; This gets LDA into Absolute mode
 	
 draw:	ldx	TILENUM		; This section gets the type of tile to draw.
 	lda 	TILES, X	; It then loads the address of the tile to draw
@@ -113,6 +116,107 @@ patch_8:
 	sta 	ADDR_2+1
 	cpx	ITER2
 	bne	lin916		; Do that till the end, then you're done.
+	rts
+	
+	
+	
+	
+	
+itemdraw:
+	ldx	TILENUM
+	lda	ITEMS,X
+	sta 	Ipatch_1+1	; and changes all references to the placeholder 
+	sta 	Ipatch_2+1	; address to the address of the tile to draw.
+	sta 	Ipatch_3+1
+	sta 	Ipatch_4+1	; this first part gets the low byte
+	sta 	Ipatch_5+1
+	sta 	Ipatch_6+1
+	sta 	Ipatch_7+1
+	sta 	Ipatch_8+1
+
+	lda 	ITEMS+1, X	; and this second part gets the high byte.
+	sta 	Ipatch_1+2
+	sta 	Ipatch_2+2
+	sta 	Ipatch_3+2
+	sta 	Ipatch_4+2
+	sta 	Ipatch_5+2
+	sta 	Ipatch_6+2
+	sta 	Ipatch_7+2
+	sta 	Ipatch_8+2
+
+	ldx	#00		; Start x, the counter, to 0.
+	ldy	TILECD		; Set y to the coordinate to draw to.
+	lda	HGR_GRID,Y	; Load the screen address for that coordinate
+	sta	ADDR_1		; Store that to address 1
+	clc
+	adc	#$80		; Add $80 to get the block below that
+	sta	ADDR_2		; Store that to address 2
+	lda	HGR_GRID+1,Y	; Get the high bytes for those two, which will be the
+	sta	ADDR_1+1	; same since the tiles never cross the interleaving pattern.
+	sta	ADDR_2+1
+	.define ITER3 #$20	; $20 means the first block is done.
+Ilin1t8:	ldy	#00
+Ipatch_1:			; Loop through the first 8 lines, drawing the value from the tile
+	lda	TILE2D,X	; data to the screen memory
+	beq	Iskip1
+	sta	(ADDR_1),Y
+Iskip1:	inx
+	iny
+Ipatch_2:
+	lda	TILE2D,X
+	beq	Iskip2
+	sta	(ADDR_1),Y
+Iskip2:	inx
+	iny
+Ipatch_3:
+	lda	TILE2D,X
+	beq	Iskip3
+	sta	(ADDR_1),Y
+Iskip3:	inx
+	iny
+Ipatch_4:
+	lda	TILE2D,X
+	beq 	Iskip4
+	sta	(ADDR_1),Y
+Iskip4:	inx
+	iny
+	lda	ADDR_1+1
+	adc	#$04
+	sta 	ADDR_1+1
+	cpx	ITER3
+	bne	Ilin1t8		; Once that is over, go down to the next 8 lines.
+	clc
+	.define ITER4 #$40	; The x counter keeps going to access the rest of the tile data
+Ilin916:	ldy	#00		; Y resets to go back to the beginning of screen memory offset
+Ipatch_5:
+	lda	TILE2D,X
+	beq	Iskip5
+	sta	(ADDR_2),Y
+Iskip5:	inx
+	iny
+Ipatch_6:
+	lda	TILE2D,X
+	beq	Iskip6
+	sta	(ADDR_2),Y
+Iskip6:	inx
+	iny
+Ipatch_7:
+	lda	TILE2D,X
+	beq	Iskip7
+	sta	(ADDR_2),Y
+Iskip7:	inx
+	iny
+Ipatch_8:
+	lda	TILE2D,X
+	beq	Iskip8
+	sta	(ADDR_2),Y
+Iskip8:	inx
+	iny
+	lda	ADDR_2+1
+	adc	#$04
+	sta 	ADDR_2+1
+	cpx	ITER4
+	bne	Ilin916		; Do that till the end, then you're done.
 	rts
 	
 .DATA

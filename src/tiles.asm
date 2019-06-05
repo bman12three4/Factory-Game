@@ -7,6 +7,7 @@
 ; Currently items are not implemented yet so it is only tiles right now.
 
 .export TILES
+.export ITEMS
 
 ; This is the tile section. Each tile is 14x16, which translates to 4 bytes x 16 lines.
 ; Most of these were generated with a processing program I wrote which allows you to 
@@ -15,9 +16,11 @@
 ; referenced to in the world array and drawn in the drawing loop.
 
 TILES:	; A list of all of them is in the .inc file.
-.word GRASS, CONVEYOR1_1, CONVEYOR1_2, CONVEYOR1_3
-.word INSERTER1_1, INSERTER1_2, INSERTER1_3,ASSEMBLER1_1
-.word ASSEMBLER1_2, ASSEMBLER1_3
+.word GRASS
+.word INSERTER1_1, INSERTER1_2, INSERTER1_3
+.word ASSEMBLER1_1, ASSEMBLER1_2, ASSEMBLER1_3
+.word CONVEYOR1_1, CONVEYOR1_2, CONVEYOR1_3
+.word CONVEYOR2_1, CONVEYOR2_2, CONVEYOR2_3
 
 
 GRASS:
@@ -90,6 +93,60 @@ CONVEYOR1_3:
 .byte $a8, $95, $a8, $95
 .byte $aa, $85, $aa, $85
 .byte $aa, $c1, $aa, $c1
+.byte $aa, $d5, $aa, $d5
+
+CONVEYOR2_1:
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $aa, $d5, $aa, $d5
+.byte $aa, $85, $aa, $85
+.byte $aa, $c1, $aa, $c1
+.byte $aa, $d0, $aa, $d0
+.byte $aa, $c1, $aa, $c1
+.byte $aa, $85, $aa, $85
+.byte $aa, $d5, $aa, $d5
+
+CONVEYOR2_2:
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $aa, $d5, $aa, $d5
+.byte $aa, $d0, $aa, $d0
+.byte $8a, $d4, $8a, $d4
+.byte $82, $d5, $82, $d5
+.byte $8a, $d4, $8a, $d4
+.byte $aa, $d0, $aa, $d0
+.byte $aa, $d5, $aa, $d5
+
+CONVEYOR2_3:
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $80, $80, $80, $80
+.byte $aa, $d5, $aa, $d5
+.byte $82, $d5, $82, $d5
+.byte $a0, $d5, $a0, $d5
+.byte $a8, $95, $a8, $95
+.byte $a0, $d5, $a0, $d5
+.byte $82, $d5, $82, $d5
 .byte $aa, $d5, $aa, $d5
 
 INSERTER1_1:
@@ -199,3 +256,79 @@ ASSEMBLER1_3:
 .byte $f5, $ff, $ff, $af
 .byte $d5, $aa, $d5, $aa
 .byte $d5, $aa, $d5, $aa
+
+ITEMS:
+.word BLANK
+.word GREEN_ORE_1, GREEN_ORE_2, GREEN_ORE_3
+
+BLANK:
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+
+GREEN_ORE_1:
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $28, $1, $0, $0
+.byte $3e, $1, $0, $0
+.byte $7a, $5, $0, $0
+.byte $6e, $5, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+
+GREEN_ORE_2:
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $40, $a, $0
+.byte $0, $70, $b, $0
+.byte $0, $50, $2f, $0
+.byte $0, $70, $2e, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+
+GREEN_ORE_3:
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $15
+.byte $0, $0, $60, $17
+.byte $0, $0, $20, $5f
+.byte $0, $0, $60, $5d
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0
+.byte $0, $0, $0, $0

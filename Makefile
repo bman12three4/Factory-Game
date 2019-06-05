@@ -1,5 +1,5 @@
 APPLE2_CL	:= C:\Users\bslat\Downloads\cc65-snapshot-win32\bin\cl65
-APPLE2_SRC	:= 	src\main.asm src\display.asm src\tiles.asm src\world.asm
+APPLE2_SRC	:=  src\main.asm src\display.asm src\tiles.asm src\world.asm	
 APPLE2_MAP	:= factory.map
 APPLE2_LIST	:= factory.list
 APPLE2_CFLAGS	:= -Oirs -v -t apple2 -vm --cpu 6502
