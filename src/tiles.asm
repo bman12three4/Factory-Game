@@ -14,7 +14,7 @@
 ; Each time a new tile is created, it's label is added to the TILES section to be
 ; referenced to in the world array and drawn in the drawing loop.
 
-TILES:
+TILES:	; A list of all of them is in the .inc file.
 .word GRASS, CONVEYOR1_1, CONVEYOR1_2, CONVEYOR1_3
 .word INSERTER1_1, INSERTER1_2, INSERTER1_3,ASSEMBLER1_1
 .word ASSEMBLER1_2, ASSEMBLER1_3

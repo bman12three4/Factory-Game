@@ -38,8 +38,13 @@ ckconv:	cmp #02		; Check if it is one of the three conveyor positions
 	beq upconv
 	cmp #06
 	beq upconv2	; Jump if it needs to be reset
-ckasmb:	
-	inx
+ckasmb:	cmp #14
+	beq upassm
+	cmp #16
+	beq upassm
+	cmp #18
+	beq upassm2
+footer:	inx
 	cpx #100
 	bne update1
 	rts
@@ -47,12 +52,20 @@ ckasmb:
 upconv:	clc		; Add 2 to the tile type, moving it forward 1.
 	adc #02
 	sta World,x
-	jmp ckasmb
+	jmp footer
 	
 upconv2:lda #02		; Set the tile type back to 2, reseting it.
 	sta World,x
-	jmp ckasmb
+	jmp footer
 	
+upassm:	clc
+	adc #02
+	sta World,x
+	jmp footer
+
+upassm2:lda #14
+	sta World,x
+	jmp footer
 	
 _delay:			; Delay loop just adds a bunch of numbers 
 	lda #00		; together to waste time.
