@@ -1,0 +1,83 @@
+Modules list:
+-------------
+main.o:
+    CODE              Offs=000000  Size=000062  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=000000  Align=00001  Fill=0000
+    BSS               Offs=000000  Size=000000  Align=00001  Fill=0000
+    DATA              Offs=000000  Size=000000  Align=00001  Fill=0000
+    ZEROPAGE          Offs=000000  Size=000000  Align=00001  Fill=0000
+    NULL              Offs=000000  Size=000000  Align=00001  Fill=0000
+display.o:
+    CODE              Offs=000062  Size=00009F  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=000000  Align=00001  Fill=0000
+    BSS               Offs=000000  Size=000000  Align=00001  Fill=0000
+    DATA              Offs=000000  Size=0000C8  Align=00001  Fill=0000
+    ZEROPAGE          Offs=000000  Size=000000  Align=00001  Fill=0000
+    NULL              Offs=000000  Size=000000  Align=00001  Fill=0000
+tiles.o:
+    CODE              Offs=000101  Size=000294  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=000000  Align=00001  Fill=0000
+    BSS               Offs=000000  Size=000000  Align=00001  Fill=0000
+    DATA              Offs=0000C8  Size=000000  Align=00001  Fill=0000
+    ZEROPAGE          Offs=000000  Size=000000  Align=00001  Fill=0000
+    NULL              Offs=000000  Size=000000  Align=00001  Fill=0000
+world.o:
+    CODE              Offs=000395  Size=000064  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=000000  Align=00001  Fill=0000
+    BSS               Offs=000000  Size=000000  Align=00001  Fill=0000
+    DATA              Offs=0000C8  Size=000000  Align=00001  Fill=0000
+    ZEROPAGE          Offs=000000  Size=000000  Align=00001  Fill=0000
+    NULL              Offs=000000  Size=000000  Align=00001  Fill=0000
+
+
+Segment list:
+-------------
+Name                   Start     End    Size  Align
+----------------------------------------------------
+NULL                  000000  000000  000000  00001
+ZEROPAGE              000000  000000  000000  00001
+CODE                  000803  000BFB  0003F9  00001
+DATA                  000BFC  000CC3  0000C8  00001
+RODATA                000BFC  000BFC  000000  00001
+BSS                   000CC4  000CC4  000000  00001
+
+
+Exports list by name:
+---------------------
+TILES                     000904 RLA    World                     000B98 RLA    
+__BSS_LOAD__              000CC4  LA    __BSS_RUN__               000CC4  LA    
+__BSS_SIZE__              000000  EA    __FILETYPE__              000006  EA    
+__MAIN_FILEOFFS__         000000  EA    __MAIN_LAST__             000CC4 RLA    
+__MAIN_SIZE__             00B7FD  EA    __MAIN_START__            000803  LA    
+draw                      000865 RLA    
+
+
+Exports list by value:
+----------------------
+__BSS_SIZE__              000000  EA    __MAIN_FILEOFFS__         000000  EA    
+__FILETYPE__              000006  EA    __MAIN_START__            000803  LA    
+draw                      000865 RLA    TILES                     000904 RLA    
+World                     000B98 RLA    __MAIN_LAST__             000CC4 RLA    
+__BSS_LOAD__              000CC4  LA    __BSS_RUN__               000CC4  LA    
+__MAIN_SIZE__             00B7FD  EA    
+
+
+Imports list:
+-------------
+TILES (tiles.o):
+    display.o                 src/tiles.inc(1)
+World (world.o):
+    main.o                    src/world.inc(1)
+__BSS_LOAD__ ([linker generated]):
+__BSS_RUN__ ([linker generated]):
+__BSS_SIZE__ ([linker generated]):
+__FILETYPE__ ([linker generated]):
+__MAIN_FILEOFFS__ ([linker generated]):
+__MAIN_LAST__ ([linker generated]):
+    [linker generated]        C:\Users\bslat\Downloads\cc65-snapshot-win32\cfg/apple2-asm.cfg(13)
+    [linker generated]        C:\Users\bslat\Downloads\cc65-snapshot-win32\cfg/apple2-asm.cfg(13)
+__MAIN_SIZE__ ([linker generated]):
+__MAIN_START__ ([linker generated]):
+draw (display.o):
+    main.o                    src\main.asm(5)
+
