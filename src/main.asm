@@ -6,7 +6,6 @@
 .import itemdraw
 .import World
 .import ItemLoc
-.import itemRot
 
 .define UPDATEPT $6
 .define UPDATERT $8
@@ -16,49 +15,34 @@
 _main:
 	jsr HGR		; Hires setup stuff
 	jsr BKGND
-loop:	jsr update	; update runs the "game logic" (more to come)
-	jmp loop	; to every tile, which animates belts and assemblers
+loop:	jmp update	; update runs the "game logic" (more to come)
+			; to every tile, which animates belts and assemblers
 	
 update:	ldx #00		; This loop just updates any animated tiles, like conveyors.
-update1:lda World,x
-cktile:	cmp #00
-	beq view
-	cmp #16		; Check if it is one of the three conveyor positions
-	beq rtconvJ	; Jump if it is
-	cmp #18
-	beq rtconvJ
-	cmp #20
-	beq rtconv2J	; Jump if it needs to be reset
-	cmp #22
-	beq lfconvJ
-	cmp #24
-	beq lfconvJ
-	cmp #26
-	beq lfconv2J
-	cmp #10
-	beq upassmJ
-	cmp #12
-	beq upassmJ
-	cmp #14
-	beq upassm2J
-	jmp ckitem
-rtconvJ: jmp rtconv
-rtconv2J:jmp rtconv2
-lfconvJ: jmp lfconv
-lfconv2J:jmp lfconv2
-upassmJ: jmp upassm
-upassm2J:jmp upassm2
-ckitem:	lda World,x
+update1:lda #>updates
+	sta UPDATEPT+1
+	lda World,x	; Load every world coordinate
+	clc
+	adc #<updates
+	sta UPDATEPT
+	ldy #00
+	lda (UPDATEPT),y
+	sta UPDATERT
+	iny
+	lda (UPDATEPT),y
+	sta UPDATERT+1
+	lda World,X
+	jmp (UPDATERT)
+ckitem: lda World,x
+	clc
 	cmp #16
-	bcs upitem
-	jmp view
-upitem:	lda ItemLoc,x
+	bcc view
+	lda ItemLoc,X
+	and #$3		; Isolate *+	
+	cmp #00		; Right now just right and left
+	beq itemright
 	cmp #02
-	beq orecalc1
-	cmp #04
-	beq orecalc2
-	cmp #06
-	beq orecalc3
+	beq itemleft
 view:	lda World,x
 	sta TILENUM
 	txa 
@@ -73,6 +57,11 @@ view:	lda World,x
 	bcs iview
 	jmp footer
 iview:	lda ItemLoc,x
+	and #$f0	; Isolate the last 4 bits
+	lsr		; Move those to the first 4 bits
+	lsr
+	lsr
+	lsr
 	sta TILENUM
 	txa 
 	asl
@@ -83,71 +72,21 @@ iview:	lda ItemLoc,x
 	tax
 footer:	inx
 	cpx #100
-	bne updateme
-	rts
-updateme:
-	jmp update1
+	bne update1
+	jmp loop
+	
+itemright:
+itemleft:
+	jmp view
+	
+	
+updates:
+.word	view, view		; 00, 02
+.word	insert, insert, insert2	; 04, 06, 08
+.word	upassm, upassm, upassm2 ; 10, 12, 14
+.word	rtconv, rtconv, rtconv2 ; 16, 18, 20
+.word	lfconv, lfconv, lfconv2 ; 22, 24, 26
 
-orecalc1:
-	lda ItemRot,x
-	cmp #00
-	beq orecalc10
-	cmp #02
-	beq orecalc12
-	jmp view
-
-orecalc10:
-	lda #04
-	sta ItemLoc,x
-	jmp view
-
-orecalc12:
-	lda #00
-	sta ItemLoc,x
-	lda #06
-	dex
-	sta ItemLoc,x
-	jmp view
-	
-orecalc2:
-	lda ItemRot,x
-	cmp #00
-	beq orecalc20
-	cmp #02
-	beq orecalc22
-	jmp view
-
-orecalc20:
-	lda #06
-	sta ItemLoc,x
-	jmp view
-	
-orecalc22:
-	lda #02
-	sta ItemLoc,x
-	jmp view
-	
-orecalc3:
-	lda ItemRot,x
-	cmp #00
-	beq orecalc30
-	cmp #02
-	beq orecalc32
-	jmp view
-	
-orecalc30:
-	lda #00
-	sta ItemLoc,x
-	lda #02
-	inx
-	sta ItemLoc,x
-	jmp view
-	
-orecalc32:
-	lda #04
-	sta ItemLoc,x
-	jmp view
-	
 	
 rtconv:	clc		; Add 2 to the tile type, moving it forward 1.
 	adc #02
@@ -217,11 +156,3 @@ slow1:	lda #>updates
 	sta UPDATERT+1
 	lda World,x
 	jmp (UPDATERT)
-
-	
-updates:
-.word	view			; If the tile is grass (0), do nothing
-.word	rtconv, rtconv, rtconv2	; 02, 04, 06
-.word	lfconv, lfconv, lfconv2 ; 08, 10, 12
-.word	insert, insert, insert2 ; 14, 16, 18
-.word	upassm, upassm, upassm2 ; 20, 22, 24

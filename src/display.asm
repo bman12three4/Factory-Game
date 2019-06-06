@@ -65,23 +65,27 @@ draw:	ldx	TILENUM		; This section gets the type of tile to draw.
 lin1t8:	ldy	#00
 patch_1:			; Loop through the first 8 lines, drawing the value from the tile
 	lda	TILE2D,X	; data to the screen memory
+	beq	skip1
 	sta	(ADDR_1),Y
-	inx
+skip1:	inx
 	iny
 patch_2:
 	lda	TILE2D,X
+	beq 	skip2
 	sta	(ADDR_1),Y
-	inx
+skip2:	inx
 	iny
 patch_3:
 	lda	TILE2D,X
+	beq	skip3
 	sta	(ADDR_1),Y
-	inx
+skip3:	inx
 	iny
 patch_4:
 	lda	TILE2D,X
+	beq	skip4
 	sta	(ADDR_1),Y
-	inx
+skip4:	inx
 	iny
 	lda	ADDR_1+1
 	adc	#$04
@@ -93,23 +97,27 @@ patch_4:
 lin916:	ldy	#00		; Y resets to go back to the beginning of screen memory offset
 patch_5:
 	lda	TILE2D,X
+	beq	skip5
 	sta	(ADDR_2),Y
-	inx
+skip5:	inx
 	iny
 patch_6:
 	lda	TILE2D,X
+	beq	skip6
 	sta	(ADDR_2),Y
-	inx
+skip6:	inx
 	iny
 patch_7:
 	lda	TILE2D,X
+	beq 	skip7
 	sta	(ADDR_2),Y
-	inx
+skip7:	inx
 	iny
 patch_8:
 	lda	TILE2D,X
+	beq	skip8
 	sta	(ADDR_2),Y
-	inx
+skip8:	inx
 	iny
 	lda	ADDR_2+1
 	adc	#$04

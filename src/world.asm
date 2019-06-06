@@ -10,13 +10,10 @@
 
 .export World
 .export ItemLoc
-.export ItemRot
 
 World:	; This is the array which stores all of the world data.
 	; Right now this is just 10x10, so no other methods are needed.
-.byte 16, 16, 16, 16, 16, 16, 16, 10, 00, 00
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-.byte 00, 02, 00, 02, 00, 00, 00, 00, 00, 00
+.byte 16, 00, 00, 00, 00, 00, 00, 00, 00, 00
 .byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
 .byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
 .byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
@@ -24,23 +21,24 @@ World:	; This is the array which stores all of the world data.
 .byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
 .byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
 .byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+
+
+
+;	Item's rotation and position.
+;	00000000
+;	|   | |
+;	|   | | First two bits are rotation (0-3)
+;       |   | Third and fourth bits are position in cell (0-2)
+;	| Last 4 bits are the item type.
+;
+;	For reference,  00001100 is $C
+;		       	00000011 is $3 
+;			00001111 is $F
 
 ItemLoc:
-.byte 02, 00, 00, 00, 00, 00, 00, 00, 00, 00
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-
-
-;	Item's rotation. 0 is to the right, 1 is up, 2 is left, 3 is down.
-ItemRot:
-.byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+.byte $20, 00, 00, 00, 00, 00, 00, 00, 00, 00
 .byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
 .byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
 .byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
